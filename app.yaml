@@ -1,0 +1,9 @@
+runtime: python38
+
+instance_class: F1
+
+env_variables: 
+  MYSQL_USER: 'root'
+  MYSQL_PASSWORD: 'arpandeepgoat'
+  MYSQL_DB: 'NFLytics'
+  MYSQL_HOST: '34.72.224.192'
