@@ -75,6 +75,9 @@ def stats(statistic=None):
     else:
         return render_template("stats.html")
 
+
+#SHANK ROUTES
 @app.route("/plays")
 def plays():
     return render_template("plays.html")
+
