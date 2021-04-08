@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source .venv/bin/activate
+export FLASK_APP=app
+export FLASK_DEBUG=1
+
+echo "Finished setting up env"
+
+#Show Player that is there
+#Show Player that is not there
+#Add Player 
+#Search for Player
+#Update Player
+#Remove Player›
+
+
+# Setup run.sh
+#   chmod +x run
+
+# To run run.sh
+#   ./run
