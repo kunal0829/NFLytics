@@ -22,9 +22,6 @@
       <li class="nav-item">
         <a class="nav-link" href="/addplayer">Add Player</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/removeplayer">Remove Player</a>
-      </li>
 
     </ul>
   </div>
@@ -51,25 +48,6 @@
       <a class="nav-link" href="/player/{{player.id}}"><strong>{{player.firstname}} {{player.lastname}} {{player.position}} (Player ID: {{player.id}})</strong></a>
   </nav>
 {% endfor %}
-
-
-
-<!-- <body>
-    {% for team in teams %}
-    <tr>
-    <td>ID: {{team.id}}</td>
-    <br>
-    <td>City: {{team.city}}</td>
-    <br>
-    <td>Team Name: {{team.name}}</td>
-    <br>
-    <td>Division: {{team.div}}</td>
-    <br>
-</tr>
-<br>
-{% endfor %}
-</body> -->
-
 
 <script>
   const search = document.getElementById('search-button');

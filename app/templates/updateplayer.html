@@ -24,13 +24,12 @@
               <li class="nav-item">
                   <a class="nav-link" href="/">Main Page <span class="sr-only">(current)</span></a>
                 </li>
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="/players">Players<span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/addplayer">Add Player</a>
-              </li>
-        
+              </li>        
             </ul>
           </div>
         </nav>
@@ -39,38 +38,18 @@
 <br>
 
 
-    <nav class="navbar navbar-light bg-light">
-      <form class="form-inline" >
-        <input id="search-bar" class="form-control mr-sm-2" type="search" placeholder="Player Name" aria-label="Search">
-        <a id="search-button" class="btn btn-outline-success my-2 my-sm-0" role="button" type="submit">Search</a>
-      </form>
+
+    <nav class="navbar navbar-light">
+      <span style="font-size:30px;"><strong>{{player.firstname}} {{player.lastname}} {{player.position}} ({{player.id}})</strong></a></span>
     </nav>
 
-    <!-- <nav class="navbar navbar-light bg-light">
-      <form class="form-inline" >
-        <a id="add-player-button" class="btn btn-outline-success my-2 my-sm-0" role="button">Add Player</a>
+    <nav>
+        <form action="updated/{{player.id}}" method="post" class="form-inline">
+        <input required id="firstname" name="firstname" class="form-control mr-sm-2" type="search" placeholder={{player.firstname}} aria-label="firstname">
+        <input required id="lastname" name="lastname" class="form-control mr-sm-2" type="search" placeholder="{{player.lastname}}" aria-label="lastname">
+        <input required id="position" name="position" class="form-control mr-sm-2" type="search" placeholder="{{player.position}}" aria-label="position">
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Update Player</button>
       </form>
     </nav>
-
-    <nav class="navbar navbar-light bg-light">
-      <form class="form-inline" >
-        <a id="remove-player-button" class="btn btn-outline-success my-2 my-sm-0" role="button">Delete Player</a>
-      </form>
-    </nav> -->
-
+   
 </html>
-
-<script>
-  const search = document.getElementById('search-button');
-  
-  search.addEventListener('click', (e) => {
-  	e.preventDefault(); // disable the refresh on the page when submit
-    const value = document.getElementById('search-bar').value;
-    console.log(value);
-
-    // similar behavior as an HTTP redirect
-    window.location.replace("/players/"+value);
-  });
-</script>
-
-

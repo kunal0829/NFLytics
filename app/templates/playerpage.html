@@ -30,9 +30,6 @@
               <li class="nav-item">
                 <a class="nav-link" href="/addplayer">Add Player</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/removeplayer">Remove Player</a>
-              </li>
         
             </ul>
           </div>
@@ -45,25 +42,8 @@
 
     <nav class="navbar navbar-light">
       <span style="font-size:30px;"><strong>{{player.firstname}} {{player.lastname}} {{player.position}} ({{player.id}})</strong></a></span>
-      <form class="form-inline" ><a id="remove-button" class="btn btn-outline-success my-2 my-sm-0" role="button" type="submit">Remove Player</a></form>
+      <form action="/updateplayer/{{player.id}}" method="post" class="form-inline"> <button type="submit" class="btn btn-outline-success my-2 my-sm-0" value ="Remove">Update Player</button> </form>
+      <form action="/removeplayer/{{player.id}}" method="post" class="form-inline"> <button type="submit" class="btn btn-outline-success my-2 my-sm-0" value ="Remove">Remove Player</button> </form>
     </nav>
-
    
 </html>
-
-<script>
-
-
-  const remove_player = document.getElementById('remove-player-button');
-  
-  remove_player.addEventListener('click', (e) => {
-  	e.preventDefault(); // disable the refresh on the page when submit
-    // const value = document.getElementById('search-bar').value;
-    // console.log(value);
-
-    // similar behavior as an HTTP redirect
-    window.location.replace("/removeplayer");
-  });
-
-
-</script>

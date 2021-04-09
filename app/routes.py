@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect, request, url_for
 from app import database as db_helper
-
+import string
 
 
 @app.route("/")
@@ -11,6 +11,7 @@ def homepage():
 
 
 @app.route("/teams")
+@app.route("/teams/")
 @app.route("/teams/<team>")
 def teams(team=None):
     if team:
@@ -21,8 +22,12 @@ def teams(team=None):
         return render_template("teams.html", teams=teams)
 
 @app.route("/players")
+@app.route("/players/")
 @app.route("/players/<player>")
 def players(player=None):
+    if str(player).upper() == "KASA" :
+        players = db_helper.fetch_demoplayerquery(player)
+        return render_template("playerquery.html",players=players)
     if player:
         players = db_helper.fetch_playerquery(player)
         return render_template("playerquery.html",players=players)
@@ -50,31 +55,50 @@ def add():
     print("{} - {} - {} - {}".format(add_id, add_first_name, add_last_name, add_pos)) # to check if it worked
     # now you have all four stuff and can check or do whatever and if good addplayer to DB
     db_helper.addplayer(add_id, add_first_name, add_last_name, add_pos)
-    return redirect((url_for('addplayer'))) # this will look for addplayer route (the one below)
-
+    return redirect("/player/"+str(add_id)) # this will look for addplayer route (the one below)
 
 @app.route("/addplayer")
 def addplayer():
-    print("hi")
     return render_template("addplayer.html")
 
-@app.route("/removeplayer")
-def removeplayer():
-    return render_template("removeplayer.html")
+@app.route("/removeplayer/<id>",methods = ['POST'])
+def removeplayer(id=None):
+    if id:
+        db_helper.removeplayer(id)
+        return redirect("/players")
+    return redirect("/players")
+
+@app.route("/updateplayer/<id>",methods = ['POST'])
+def updateplayer(id=None):
+    if id:
+        player = db_helper.fetch_playerfromid(id)
+        return render_template("updateplayer.html",player=player)
+    return render_template("updateplayer.html",player=None)
+
+@app.route("/updateplayer/updated/<id>", methods = ['POST'])
+def updated(id = None):
+    if id: 
+        update_first_name = request.form['firstname']
+        update_last_name = request.form['lastname']
+        update_pos = request.form['position']
+        db_helper.update_player(id, update_first_name, update_last_name, update_pos)
+        print("Complete")
+    return redirect("/player/" + str(id)) # this will look for addplayer route (the one below)
+
+
 
 @app.route("/stats")
 def stats():
-    
         return render_template("stats.html")
 
 @app.route("/stats/team/<statistic>")
 def teamstats(statistic=None):
     if statistic == "4dc4q":
         query = db_helper.fetch_stastics(statistic)
-        return  render_template("teamstat.html",query=query,fields=["Team","Average Conversions"])
+        return  render_template("teamstat.html",query=query,fields=["Team","Avg 4th Down Conv in 4th"])
     elif statistic == "tfl":
         query = db_helper.fetch_stastics(statistic)
-        return  render_template("teamstat.html",query=query,fields=["Team","Number of TFLs"])
+        return  render_template("teamstat.html",query=query,fields=["Team","# of Tackles for Loss"])
     else:
          return render_template("stats.html")
 
