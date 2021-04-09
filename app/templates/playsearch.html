@@ -40,16 +40,9 @@
     <br/>
     <br/>
 
-    <div class="alert alert-info" role="alert">
-      Select an action!
-    </div>
-    
-    <br/>
-
-
     <ul class="nav nav-pills nav-fill">
       <li class="nav-item">
-        <a class="nav-link" href="/plays/search">Search Play</a>
+        <a class="nav-link active" href="/plays/search">Search Play</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/plays/addplay">Add Play</a>
@@ -59,9 +52,44 @@
       </li>
     </ul>
 
+    <br/>
+    <br/>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Offensive Team</label>
+      </div>
+      <select class="custom-select" id="inputGroupSelect01">
+        <option selected>All Teams</option>
+        <option value="1">HOU</option>
+        <option value="2">LV</option>
+        <option value="3">MIA</option>
+        <option value="4">PIT</option>
+      </select>
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-secondary" type="button" id="play-search-button">Search</button>
+      </div>
+    </div>
+
+
+    
+
 
   </body>
 
 
-
 </html>
+
+
+<script>
+  const search = document.getElementById('play-search-button');
+  
+  search.addEventListener('click', (e) => {
+  	e.preventDefault(); // disable the refresh on the page when submit
+    const value = document.getElementById('search-bar').value;
+    console.log(value);
+
+    // similar behavior as an HTTP redirect
+
+  });
+</script>

@@ -5,9 +5,10 @@ export FLASK_APP=app
 export FLASK_DEBUG=1
 
 echo "Finished setting up env"
+flask run
 
-# Setup run.sh
+# Setup run (only very first time)
 #   chmod +x run
 
-# To run run.sh
+# To run run
 #   ./run

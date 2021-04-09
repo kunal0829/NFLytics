@@ -91,3 +91,6 @@ def convertDiv(division):
         return division[:len(division) - 1] + " South"
     else: 
         return division[:len(division) - 1] + " East"
+
+def fetch_play(seasonYear, offenseTeam=None, defenseTeam=None):
+    query = "SELECT * FROM Plays WHERE OffenseTeam LIKE \"" + str(offenseTeam) + "\"" + "AND SeasonYear = " + str(seasonYear) + ";"

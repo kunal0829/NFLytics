@@ -77,7 +77,22 @@ def stats(statistic=None):
 
 
 #SHANK ROUTES
-@app.route("/plays")
-def plays():
-    return render_template("plays.html")
 
+@app.route("/plays")
+@app.route("/plays/")
+@app.route("/plays/<operation>")
+@app.route("/plays/<operation>/")
+@app.route("/plays/<operation>/<id>")
+def plays(operation=None, id=None):
+    if operation:
+        if operation == "search":
+            plays = db_helper.fetch_play(2013);
+            return render_template("playsearch.html", plays=plays)
+        elif operation == "addplay":
+            return render_template("playsadd.html") 
+        elif operation == "removeplay":
+            return render_template("playsremove.html")
+        else:
+            return render_template("plays.html")
+    else:
+        return render_template("plays.html")

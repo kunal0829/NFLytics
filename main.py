@@ -1,6 +1,7 @@
 from app import app
 
 if __name__ == '__main__':
+    app.config['SERVER_NAME'] = 'NFLytics'
     app.run(debug = True)
 
 
