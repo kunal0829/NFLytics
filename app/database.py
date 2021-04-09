@@ -91,3 +91,24 @@ def convertDiv(division):
         return division[:len(division) - 1] + " South"
     else: 
         return division[:len(division) - 1] + " East"
+
+
+def fetch_stastics(statistic):
+    if statistic == "4dc4q":
+        query = "SELECT t.name AS \"Team Name\",averageplaysran.averageplays as \"Avg # of Conversions in 4th\" FROM (SELECT p.offenseteam as team, count(*)/4 as averageplays from Plays as p WHERE down = 4 AND yards >= togo AND quarter = 4 GROUP BY p.offenseteam) AS averageplaysran JOIN Teams t ON averageplaysran.team = t.teamid ORDER BY averageplaysran.averageplays DESC;"
+    elif statistic == "tfl":
+        query = "SELECT t.name, COUNT(*) as numTFLs FROM (Plays p JOIN Teams t ON (p.defenseteam = t.teamid)) JOIN SeasonOutcomes s ON (t.teamid = s.teamid AND p.seasonYear = s.Year) WHERE yards < 0 AND s.Year = 2015 GROUP BY t.name, s.wins ORDER BY s.wins DESC, numTFLs DESC"
+    teamquery = []
+    conn = db.connect()
+    teams = conn.execute(str(query)).fetchall()
+    conn.close()
+    for team in teams:
+        current = {
+            'teamname': team[0],
+            'avg': team[1],
+        }
+        teamquery.append(current)
+    return teamquery
+
+
+

@@ -63,21 +63,23 @@ def removeplayer():
     return render_template("removeplayer.html")
 
 @app.route("/stats")
-@app.route("/players/<statistic>")
-def stats(statistic=None):
-    if statistic:
-        statistics = db_helper.fetch_stastics(statistic)
-        statistictype = db_helper.fetch_stastic_type(statistic)
-        if statistictype == "Team":
-            return render_template("teamstatistics.html")
-        else: 
-            return render_template("playerstatistics.html")
-    else:
+def stats():
+    
         return render_template("stats.html")
+
+@app.route("/stats/team/<statistic>")
+def teamstats(statistic=None):
+    if statistic == "4dc4q":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("teamstat.html",query=query,fields=["Team","Average Conversions"])
+    elif statistic == "tfl":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("teamstat.html",query=query,fields=["Team","Number of TFLs"])
+    else:
+         return render_template("stats.html")
 
 
 #SHANK ROUTES
 @app.route("/plays")
 def plays():
     return render_template("plays.html")
-

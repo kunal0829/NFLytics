@@ -38,26 +38,22 @@
     </div>
   </nav>
 </header>
-
 <br>
-
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="teamstatics" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Team Statistics
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href="/stats/team/4dc4q">4th Down Conversions in 4th</a>
-      <a class="dropdown-item" href="/stats/team/tfl">Tackles For Loss</a>
-  </div>
-</div>
-
-<br>
-
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Player Statistics
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-  </div>
-</div>
-</html>
+  <table class="table table-dark">
+    <thead>
+      <tr>  
+        {% for field in fields %}
+            <th scope="col">{{field}}</th> 
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for team in query%}
+        <tr>
+                <td>{{team.teamname}}</td>
+                <td>{{team.avg}}</td>
+        </tr>
+        {% endfor %}
+      <tr>
+    </tbody>
+  </table>
