@@ -1,6 +1,7 @@
 from app import db
-from random import randrange
 import math
+import random
+
 
 def fetch_teamdata():
     """Reads all tasks listed in the todo table
@@ -102,6 +103,21 @@ def addplayer(id,firstname,lastname,position):
     conn.close()
     return
     
+def fetch_empty_id():
+    id = random.randint(1, 99)
+    query = "SELECT PlayerId FROM PlayersInfo WHERE PlayerId = " + str(id)
+    conn = db.connect()
+    check = conn.execute(str(query)).fetchall()
+    while len(check) > 0:
+        id = random.randint(1, 99)
+        query = "SELECT PlayerId FROM PlayersInfo WHERE PlayerId = " + str(id)
+        check = conn.execute(str(query)).fetchall()
+    conn.close()
+    print(id)
+    return id
+
+
+
 def removeplayer(id):
     query = "DELETE FROM PlayersInfo WHERE PlayerId = " + str(id)
     conn = db.connect()
@@ -199,9 +215,9 @@ def create_play(dict):
     if dict:
         attrs = "PlayId, GameId, GameDate, Quarter, OffenseTeam, DefenseTeam, Down, ToGo, YardLine, Yards, Description, SeasonYear"
         # query = "INSERT INTO Plays(" + attrs + ") VALUES(" + dict['playid'] + ", " + dict['gameid'] + ", TO_DATE(\"" + dict['gamedate'] + "\", \"MM/DD/YY\"), " + dict['quarter'] + ", \"" + dict['oteam'] + "\", \"" + dict['dteam'] + "\", " + dict['down'] + ", " + dict['togo'] + ", " + dict['yardLine'] + ", " + dict['yards'] + ", \"" + dict['description'] + "\", " + dict['season'] + ");"
-        pid = randrange(2**20)
+        pid = random.randrange(2**20)
         while (fetch_play_by_id(pid)):
-            pid = randrange(2**20)
+            pid = random.randrange(2**20)
 
         query = "INSERT INTO Plays(" + attrs + ") VALUES(" + str(pid) + ", " + dict['gameid'] + ", \"" + dict['gamedate'] + "\", " + dict['quarter'] + ", \"" + dict['oteam'] + "\", \"" + dict['dteam'] + "\", " + dict['down'] + ", " + dict['togo'] + ", " + dict['yardLine'] + ", " + dict['yards'] + ", \"" + dict['description'] + "\", " + dict['season'] + ");"
 
