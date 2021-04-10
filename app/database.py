@@ -190,7 +190,7 @@ def fetch_play_by_id(playid):
 
 def update_play(dict):
     if (dict):
-        query = "UPDATE Plays SET Quarter = " + dict['quarter'] + ", OffenseTeam = \"" + dict['oteam'] + "\", DefenseTeam = \"" + dict['dteam'] + "\", YardLine = \"" + dict['yardLine'] + "\", Yards = \"" + dict['yards'] + "\", GameDate = \"" + dict['gamedate'] + "\", Description = \"" + dict['description'] + "\", SeasonYear = \"" + dict['season'] + "\" WHERE PlayId = " + dict['playid'] + ";";
+        query = "UPDATE Plays SET Quarter = " + dict['quarter'] + ", OffenseTeam = \"" + dict['oteam'] + "\", DefenseTeam = \"" + dict['dteam'] + "\", YardLine = \"" + dict['yardLine'] + "\", Yards = \"" + dict['yards'] + "\", Description = \"" + dict['description'] + "\", SeasonYear = \"" + dict['season'] + "\" WHERE PlayId = " + dict['playid'] + ";";
 
         print(query)
 

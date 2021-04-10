@@ -79,7 +79,6 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th scope="col">Game Date</th>
               <th scope="col">Quarter</th>
               <th scope="col">Offense Team</th>
               <th scope="col">Defense Team</th>
@@ -92,8 +91,7 @@
 
             {% for play in plays %}
               <tr>
-                <th scope="row">{{play['gamedate']}}</th>
-                <td>{{play['quarter']}}</td>
+                <th scope="row">{{play['quarter']}}</td>
                 <td>{{play['oteam']}}</td>
                 <td>{{play['dteam']}}</td>
                 <td>{{play['description']}}</td>
