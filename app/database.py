@@ -1,4 +1,6 @@
 from app import db
+import random
+
 
 def fetch_teamdata():
     """Reads all tasks listed in the todo table
@@ -100,6 +102,21 @@ def addplayer(id,firstname,lastname,position):
     conn.close()
     return
     
+def fetch_empty_id():
+    id = random.randint(1, 99)
+    query = "SELECT PlayerId FROM PlayersInfo WHERE PlayerId = " + str(id)
+    conn = db.connect()
+    check = conn.execute(str(query)).fetchall()
+    while len(check) > 0:
+        id = random.randint(1, 99)
+        query = "SELECT PlayerId FROM PlayersInfo WHERE PlayerId = " + str(id)
+        check = conn.execute(str(query)).fetchall()
+    conn.close()
+    print(id)
+    return id
+
+
+
 def removeplayer(id):
     query = "DELETE FROM PlayersInfo WHERE PlayerId = " + str(id)
     conn = db.connect()

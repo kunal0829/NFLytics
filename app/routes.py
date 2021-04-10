@@ -48,7 +48,8 @@ def player(id=None):
 def add():
     print("hello")
     # when a POST is made to this endpoint we can get the data submitted as a dictionary (request.form)
-    add_id = request.form['id'] #the key should match up to the name of the textbox on addplayer.html
+    # add_id = request.form['id']
+    add_id = db_helper.fetch_empty_id()
     add_first_name = request.form['firstname']
     add_last_name = request.form['lastname']
     add_pos = request.form['position']
