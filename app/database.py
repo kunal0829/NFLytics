@@ -137,7 +137,7 @@ def convertDiv(division):
         return division[:len(division) - 1] + " East"
 
 def fetch_play(seasonYear, offenseTeam=None, defenseTeam=None):
-    attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear"
+    attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear, GameDate"
 
     query = "SELECT " + attrs + " FROM Plays WHERE OffenseTeam LIKE \"" + offenseTeam + "\" AND DefenseTeam LIKE \""  + defenseTeam + "\" AND SeasonYear = " + str(seasonYear) + " ORDER BY GameDate DESC, Quarter ASC;"
 
@@ -155,13 +155,14 @@ def fetch_play(seasonYear, offenseTeam=None, defenseTeam=None):
             'yardLine': play[4],
             'yards': play[5],
             'description': play[6],
-            'season': play[7]
+            'season': play[7],
+            'gamedate': play[8]
         }
         ret.append(curr_play)
     return ret
 
 def fetch_play_by_id(playid):
-    attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear"
+    attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear, GameDate"
 
     query = "SELECT " + attrs + " FROM Plays WHERE PlayId = " + str(playid) + ";";
 
@@ -173,10 +174,6 @@ def fetch_play_by_id(playid):
         return None
     
     play = plays[0]
-
-    print("======Fetching=====")
-    print(play)
-
     curr_play = {
         'playid': play[0],
         'quarter': play[1],
@@ -185,14 +182,15 @@ def fetch_play_by_id(playid):
         'yardLine': play[4],
         'yards': play[5],
         'description': play[6],
-        'season': play[7]
+        'season': play[7],
+        'gamedate': play[8]
     }
 
     return curr_play
 
 def update_play(dict):
     if (dict):
-        query = "UPDATE Plays SET Quarter = " + dict['quarter'] + ", OffenseTeam = \"" + dict['oteam'] + "\", DefenseTeam = \"" + dict['dteam'] + "\", YardLine = \"" + dict['yardLine'] + "\", Yards = \"" + dict['yards'] + "\", Description = \"" + dict['description'] + "\", SeasonYear = \"" + dict['season'] + "\" WHERE PlayId = " + dict['playid'] + ";";
+        query = "UPDATE Plays SET Quarter = " + dict['quarter'] + ", OffenseTeam = \"" + dict['oteam'] + "\", DefenseTeam = \"" + dict['dteam'] + "\", YardLine = \"" + dict['yardLine'] + "\", Yards = \"" + dict['yards'] + "\", GameDate = \"" + dict['gamedate'] + "\", Description = \"" + dict['description'] + "\", SeasonYear = \"" + dict['season'] + "\" WHERE PlayId = " + dict['playid'] + ";";
 
         print(query)
 
