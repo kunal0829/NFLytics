@@ -86,35 +86,50 @@
 
 
   <html> -->
+
+
 <script>
-window.onload = function () {
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	theme: "light4", // "light1", "light2", "dark1", "dark2"
-  height:600,
-	title:{
-		text: "{{fields[0]}} vs {{fields[1]}}"
-	},
-	axisY: {
-		title: "{{fields[1]}}"
-	},
-  axisX: {
-    labelFontSize: 11,
-    interval: 1,
-		title: "{{fields[0]}}"
-	},
-	data: [{        
-		type: "column",
-		dataPoints: [
-    {% for team in query%}
+  window.onload = function () {
+    
+  var chart2 = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,
+    
+    title:{
+      text:"{{fields[0]}} vs {{fields[1]}}",
+      fontSize: 30,
+    },
+    height:750,
+    
+    axisX:{
+      interval: 1,
+      labelFontSize: 20,
+      title: "{{fields[0]}}",
+    },
+    axisY2:{
+      interlacedColor: "rgba(1,77,101,.2)",
+      gridColor: "rgba(1,77,101,.1)",
+      titleFontSize: 20,
+      labelFontSize: 11,
+      title: "{{fields[1]}}",
+      
+    },
+    data: [{
+      type: "bar",
+      name: "{{fields[0]}}",
+      axisYType: "secondary",
+      color: "#014D65",
+      dataPoints: [
+      {% for team in query%}
       { y: {{team.avg}},  label: "{{team.teamname}}" },
-    {% endfor %}],
-	}]
-});
-chart.render();
-}
-</script>
-</head>
-<body>
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    {% endfor %}
+      ]
+    }]
+  });
+  chart2.render();
+  
+  }
+  </script>
+  </head>
+  <body>
+  <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

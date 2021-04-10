@@ -98,7 +98,7 @@ def teamstats(statistic=None):
         return  render_template("teamstat.html",query=query,fields=["Team","Avg 4th Down Conv in 4th"])
     elif statistic == "tfl":
         query = db_helper.fetch_stastics(statistic)
-        return  render_template("teamstat.html",query=query,fields=["Team","# of Tackles for Loss"])
+        return  render_template("shankteamstat.html",query=query,fields=["Team","# of Tackles for Loss"])
     else:
          return render_template("stats.html")
 
