@@ -93,7 +93,51 @@ def convertDiv(division):
         return division[:len(division) - 1] + " East"
 
 def fetch_play(seasonYear, offenseTeam=None, defenseTeam=None):
-    query = "SELECT * FROM Plays WHERE OffenseTeam LIKE \"" + str(offenseTeam) + "\"" + "AND SeasonYear = " + str(seasonYear) + ";"
+    attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear"
+
+    query = "SELECT " + attrs + " FROM Plays WHERE OffenseTeam LIKE \"" + offenseTeam + "\"" + " AND SeasonYear = " + str(seasonYear) + " ORDER BY GameDate DESC, Quarter ASC;"
+
+    conn = db.connect()
+    plays = conn.execute(query).fetchall()
+    conn.close()
+
+    ret = []
+    for play in plays:
+        curr_play = {
+            'playid': play[0],
+            'quarter': play[1],
+            'oteam': play[2],
+            'dteam': play[3],
+            'yardLine': play[4],
+            'yards': play[5],
+            'description': play[6],
+            'season': play[7]
+        }
+        ret.append(curr_play)
+    return ret;
+
+def fetch_play_by_id(playid):
+    attrs = "Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear"
+
+    query = "SELECT " + attrs + " FROM Plays WHERE PlayId = " + str(playid) + ";";
+
+    conn = db.connect()
+    plays = conn.execute(query).fetchall()
+    conn.close()
+
+    ret = []
+    for play in plays:
+        curr_play = {
+            'quarter': play[1],
+            'oteam': play[2],
+            'dteam': play[3],
+            'yardLine': play[4],
+            'yards': play[5],
+            'description': play[6],
+            'season': play[7]
+        }
+        ret.append(curr_play)
+    return ret
 
 def fetch_stastics(statistic):
     if statistic == "4dc4q":

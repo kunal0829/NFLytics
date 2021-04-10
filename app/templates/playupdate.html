@@ -37,25 +37,43 @@
       </nav>
     </header>
 
-    <br/>
-    <br/>
+    <div margin-top="10px">
+      <br/>
+      <br/>
 
+      <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+          <a class="nav-link" href="/plays/search">Search Play</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active">Update Play</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/plays/addplay">Add Play</a>
+        </li>
+      </ul>
 
-    <ul class="nav nav-pills nav-fill">
-      <li class="nav-item">
-        <a class="nav-link" href="/plays/search">Search Play</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/plays/addplay">Add Play</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="/plays/removeplay">Remove Play</a>
-      </li>
-    </ul>
+      <br/>
+      <br/>
 
+      {% if not play%}
+        <div class="alert alert-error" role="alert">
+          Please return to search
+        </div>
+      {% else %}
+        {{play['quarter']}}
+      {% endif %}
+    </div>
+
+    <script>
+      const txt = document.getElementById("the-tester")
+
+      function editplay(pid) {
+        window.location.replace("/plays/updateplay/" + pid);
+      }
+    </script>
 
   </body>
-
 
 
 </html>

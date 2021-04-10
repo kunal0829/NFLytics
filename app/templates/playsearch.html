@@ -47,9 +47,6 @@
       <li class="nav-item">
         <a class="nav-link" href="/plays/addplay">Add Play</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/plays/removeplay">Remove Play</a>
-      </li>
     </ul>
 
     <br/>
@@ -57,39 +54,61 @@
 
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <label class="input-group-text" for="inputGroupSelect01">Offensive Team</label>
+        <label class="input-group-text" for="inputOffensiveTeam">Offensive Team:</label>
       </div>
-      <select class="custom-select" id="inputGroupSelect01">
-        <option selected>All Teams</option>
-        <option value="1">HOU</option>
-        <option value="2">LV</option>
-        <option value="3">MIA</option>
-        <option value="4">PIT</option>
+      <select class="custom-select" id="inputOffensiveTeam">
+        <option value="ALL">All Teams</option>
+        <option value="HOU">HOU</option>
+        <option value="LV">LV</option>
+        <option value="MIA">MIA</option>
+        <option value="PIT">PIT</option>
       </select>
       <div class="input-group-prepend">
-        <button class="btn btn-outline-secondary" type="button" id="play-search-button">Search</button>
+        <label class="input-group-text" for="inputDefensiveTeam">Defensive Team:</label>
+      </div>
+      <select class="custom-select" id="inputDefensiveTeam">
+        <option value="ALL">All Teams</option>
+        <option value="HOU">HOU</option>
+        <option value="LV">LV</option>
+        <option value="MIA">MIA</option>
+        <option value="PIT">PIT</option>
+      </select>
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputSeasonYear">Season Year:</label>
+      </div>
+      <select class="custom-select" id="inputSeasonYear">
+        <option value="2013">2013</option>
+        <option value="2014">2014</option>
+        <option value="2015">2015</option>
+        <option value="2016">2016</option>
+      </select>
+      <div class="input-group-prepend">
+        <a id="play-search-button" class="btn btn-outline-success my-2 my-sm-0" role="button" type="submit" onclick="searchPlay()">Search</a>
       </div>
     </div>
 
+    <br/>
+    <br/>
 
-    
+    <p id="out" />
+
+
+    <script>
+      const offensiveTeam = document.getElementById("inputOffensiveTeam");
+      const defensiveTeam = document.getElementById("inputDefensiveTeam");
+      const seasonYear = document.getElementById("inputSeasonYear");
+
+      function searchPlay() {
+        oTeamID = offensiveTeam.value;
+        dTeamID = defensiveTeam.value;
+        season = seasonYear.value;
+
+        window.location.replace("/plays/search/" + oTeamID + "-" + dTeamID + "-" + season);
+      }
+    </script>
 
 
   </body>
 
 
 </html>
-
-
-<script>
-  const search = document.getElementById('play-search-button');
-  
-  search.addEventListener('click', (e) => {
-  	e.preventDefault(); // disable the refresh on the page when submit
-    const value = document.getElementById('search-bar').value;
-    console.log(value);
-
-    // similar behavior as an HTTP redirect
-
-  });
-</script>

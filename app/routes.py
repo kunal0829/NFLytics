@@ -86,15 +86,30 @@ def teamstats(statistic=None):
 @app.route("/plays/<operation>")
 @app.route("/plays/<operation>/")
 @app.route("/plays/<operation>/<id>")
+@app.route("/plays/<operation>/<id>/")
 def plays(operation=None, id=None):
     if operation:
         if operation == "search":
-            plays = db_helper.fetch_play(2013);
-            return render_template("playsearch.html", plays=plays)
+            if (id):
+                ids = id.split('-')
+                if (len(id) >= 3):
+                    ids[0] = "%" if (ids[0] == "ALL") else ids[0]
+                    ids[1] = "%" if (ids[1] == "ALL") else ids[1]
+
+                    plays = db_helper.fetch_play(ids[2], offenseTeam=ids[0], defenseTeam=ids[1])
+                    return render_template("playsearchquery.html", plays=plays)
+                else:
+                    return render_template("playsearch.html")
+            else:
+                return render_template("playsearch.html")
+        # elif operation == "updateplay":
+        #     if id:
+        #         play = db_helper.fetch_play_by_id(id)
+        #         return render_template("playupdate.html", play=play)
+        #     else:
+        #         return render_template("plays.html")
         elif operation == "addplay":
-            return render_template("playsadd.html") 
-        elif operation == "removeplay":
-            return render_template("playsremove.html")
+            return render_template("playsadd.html")
         else:
             return render_template("plays.html")
     else:
