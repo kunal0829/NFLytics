@@ -93,13 +93,11 @@
     
   var chart2 = new CanvasJS.Chart("chartContainer", {
     animationEnabled: true,
-    
     title:{
       text:"{{fields[0]}} vs {{fields[1]}}",
       fontSize: 30,
     },
     height:750,
-    
     axisX:{
       interval: 1,
       labelFontSize: 20,
@@ -116,8 +114,6 @@
     data: [{
       type: "bar",
       name: "{{fields[0]}}",
-      axisYType: "secondary",
-      color: "#014D65",
       dataPoints: [
       {% for team in query%}
       { y: {{team.avg}},  label: "{{team.teamname}}" },
