@@ -1,4 +1,6 @@
 from app import db
+from random import randrange
+import math
 
 def fetch_teamdata():
     """Reads all tasks listed in the todo table
@@ -121,7 +123,7 @@ def convertDiv(division):
 def fetch_play(seasonYear, offenseTeam=None, defenseTeam=None):
     attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear"
 
-    query = "SELECT " + attrs + " FROM Plays WHERE OffenseTeam LIKE \"" + offenseTeam + "\"" + " AND SeasonYear = " + str(seasonYear) + " ORDER BY GameDate DESC, Quarter ASC;"
+    query = "SELECT " + attrs + " FROM Plays WHERE OffenseTeam LIKE \"" + offenseTeam + "\" AND DefenseTeam LIKE \""  + defenseTeam + "\" AND SeasonYear = " + str(seasonYear) + " ORDER BY GameDate DESC, Quarter ASC;"
 
     conn = db.connect()
     plays = conn.execute(query).fetchall()
@@ -143,7 +145,7 @@ def fetch_play(seasonYear, offenseTeam=None, defenseTeam=None):
     return ret;
 
 def fetch_play_by_id(playid):
-    attrs = "Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear"
+    attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear"
 
     query = "SELECT " + attrs + " FROM Plays WHERE PlayId = " + str(playid) + ";";
 
@@ -151,19 +153,64 @@ def fetch_play_by_id(playid):
     plays = conn.execute(query).fetchall()
     conn.close()
 
-    ret = []
-    for play in plays:
-        curr_play = {
-            'quarter': play[1],
-            'oteam': play[2],
-            'dteam': play[3],
-            'yardLine': play[4],
-            'yards': play[5],
-            'description': play[6],
-            'season': play[7]
-        }
-        ret.append(curr_play)
-    return ret
+    if not plays:
+        return None
+    
+    play = plays[0]
+
+    print("======Fetching=====")
+    print(play)
+
+    curr_play = {
+        'playid': play[0],
+        'quarter': play[1],
+        'oteam': play[2],
+        'dteam': play[3],
+        'yardLine': play[4],
+        'yards': play[5],
+        'description': play[6],
+        'season': play[7]
+    }
+
+    return curr_play
+
+def update_play(dict):
+    if (dict):
+        query = "UPDATE Plays SET Quarter = " + dict['quarter'] + ", OffenseTeam = \"" + dict['oteam'] + "\", DefenseTeam = \"" + dict['dteam'] + "\", YardLine = \"" + dict['yardLine'] + "\", Yards = \"" + dict['yards'] + "\", Description = \"" + dict['description'] + "\", SeasonYear = \"" + dict['season'] + "\" WHERE PlayId = " + dict['playid'] + ";";
+
+        print(query)
+
+        conn = db.connect()
+        conn.execute(query)
+        conn.close()
+
+
+def delete_play(playid):
+    if (dict):
+        query = "DELETE FROM Plays WHERE PlayId = " + playid + ";";
+
+        print(query)
+
+        conn = db.connect()
+        conn.execute(query)
+        conn.close()
+
+def create_play(dict):
+    if dict:
+        attrs = "PlayId, GameId, GameDate, Quarter, OffenseTeam, DefenseTeam, Down, ToGo, YardLine, Yards, Description, SeasonYear"
+        # query = "INSERT INTO Plays(" + attrs + ") VALUES(" + dict['playid'] + ", " + dict['gameid'] + ", TO_DATE(\"" + dict['gamedate'] + "\", \"MM/DD/YY\"), " + dict['quarter'] + ", \"" + dict['oteam'] + "\", \"" + dict['dteam'] + "\", " + dict['down'] + ", " + dict['togo'] + ", " + dict['yardLine'] + ", " + dict['yards'] + ", \"" + dict['description'] + "\", " + dict['season'] + ");"
+        pid = randrange(2**20)
+        while (fetch_play_by_id(pid)):
+            pid = randrange(2**20)
+
+        query = "INSERT INTO Plays(" + attrs + ") VALUES(" + str(pid) + ", " + dict['gameid'] + ", \"" + dict['gamedate'] + "\", " + dict['quarter'] + ", \"" + dict['oteam'] + "\", \"" + dict['dteam'] + "\", " + dict['down'] + ", " + dict['togo'] + ", " + dict['yardLine'] + ", " + dict['yards'] + ", \"" + dict['description'] + "\", " + dict['season'] + ");"
+
+        print(query)
+
+        conn = db.connect()
+        conn.execute(query)
+        conn.close()
+
 
 def fetch_stastics(statistic):
     if statistic == "4dc4q":

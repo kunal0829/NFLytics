@@ -105,6 +105,17 @@ def teamstats(statistic=None):
 
 #SHANK ROUTES
 
+@app.route("/plays/updated", methods = ['POST'])
+def update_play():
+    db_helper.update_play(request.form)
+    return render_template("plays.html")
+
+@app.route("/plays/add_play", methods = ['POST'])
+def add_play():
+    print("=======ADDED PLAYS=======")
+    db_helper.create_play(request.form)
+    return render_template("plays.html")
+
 @app.route("/plays")
 @app.route("/plays/")
 @app.route("/plays/<operation>")
@@ -117,21 +128,24 @@ def plays(operation=None, id=None):
             if (id):
                 ids = id.split('-')
                 if (len(id) >= 3):
-                    ids[0] = "%" if (ids[0] == "ALL") else ids[0]
-                    ids[1] = "%" if (ids[1] == "ALL") else ids[1]
-
                     plays = db_helper.fetch_play(ids[2], offenseTeam=ids[0], defenseTeam=ids[1])
                     return render_template("playsearchquery.html", plays=plays)
                 else:
                     return render_template("playsearch.html")
             else:
                 return render_template("playsearch.html")
-        # elif operation == "updateplay":
-        #     if id:
-        #         play = db_helper.fetch_play_by_id(id)
-        #         return render_template("playupdate.html", play=play)
-        #     else:
-        #         return render_template("plays.html")
+        elif operation == "updateplay":
+            if id:
+                play = db_helper.fetch_play_by_id(id)
+                return render_template("playupdate.html", play=play)
+            else:
+                return render_template("plays.html")
+        elif operation == "deleteplay":
+            if id:
+                play = db_helper.delete_play(id)
+                return render_template("plays.html", play=play)
+            else:
+                return render_template("plays.html")
         elif operation == "addplay":
             return render_template("playsadd.html")
         else:

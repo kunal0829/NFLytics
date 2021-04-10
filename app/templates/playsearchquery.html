@@ -68,15 +68,14 @@
           </thead>
         </table>
 
-        <br/>
-        <br/>
+        <br>
+        <br>
 
-        <div class="alert alert-error" role="alert">
+        <div class="alert alert-danger" role="alert">
           Your search yielded no results! Please try another search.
         </div>
 
       {% else %}
-        <h1 id="the-tester"></h1>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -97,25 +96,26 @@
                 <td>{{play['dteam']}}</td>
                 <td>{{play['description']}}</td>
                 <td>
-                  <button type="button" class="btn btn-info" id="edit{{play['playid']}}" onclick="editplay({{play['playid']}})">Edit</button>
+                  <button type="button" class="btn btn-info" onclick="editplay({{play['playid']}})">Edit</button>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-danger">Delete</button>
+                  <button type="button" class="btn btn-danger" onclick="deleteplay({{play['playid']}})">Delete</button>
                 </td>
               </tr>
             {% endfor %}
 
           </tbody>
         </table>
-
       {% endif %}
     </div>
 
     <script>
-      const txt = document.getElementById("the-tester")
-
       function editplay(pid) {
         window.location.replace("/plays/updateplay/" + pid);
+      }
+
+      function deleteplay(pid) {
+        window.location.replace("/plays/deleteplay/" + pid);
       }
     </script>
 
