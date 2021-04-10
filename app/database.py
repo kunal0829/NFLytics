@@ -158,7 +158,7 @@ def fetch_play(seasonYear, offenseTeam=None, defenseTeam=None):
             'season': play[7]
         }
         ret.append(curr_play)
-    return ret;
+    return ret
 
 def fetch_play_by_id(playid):
     attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear"
