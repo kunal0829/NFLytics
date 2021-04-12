@@ -94,7 +94,7 @@
   var chart2 = new CanvasJS.Chart("chartContainer", {
     animationEnabled: false,
     title:{
-      text:"{{fields[0]}} vs {{fields[1]}}, (Ordered by record)",
+      text:"{{fields[0]}} vs {{fields[1]}}, (Out of total TFLS in league)",
       fontSize: 30,
     },
     height:750,
@@ -112,7 +112,7 @@
       
     },
     data: [{
-      type: "line",
+      type: "pie",
       name: "{{fields[0]}}",
       dataPoints: [
       {% for team in query%}
