@@ -92,9 +92,9 @@
   window.onload = function () {
     
   var chart2 = new CanvasJS.Chart("chartContainer", {
-    animationEnabled: true,
+    animationEnabled: false,
     title:{
-      text:"{{fields[0]}} vs {{fields[1]}}",
+      text:"{{fields[0]}} vs {{fields[1]}}, (Ordered by record)",
       fontSize: 30,
     },
     height:750,
@@ -112,17 +112,16 @@
       
     },
     data: [{
-      type: "bar",
+      type: "line",
       name: "{{fields[0]}}",
       dataPoints: [
       {% for team in query%}
-      { y: {{team.avg}},  label: "{{team.teamname}}" },
-    {% endfor %}
+        { y: {{team.avg}},  label: "{{team.teamname}}" },
+      {% endfor %}
       ]
     }]
   });
   chart2.render();
-  
   }
   </script>
   </head>
