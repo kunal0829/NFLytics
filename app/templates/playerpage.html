@@ -58,6 +58,9 @@
     title:{
       text: "{{columns[0]}} vs {{columns[1]}}"
     },
+    axisY: {
+      minimum: 0
+    },
     data: [{        
       type: "bar",
           indexLabelFontSize: 16,
@@ -76,6 +79,9 @@ var chart2 = new CanvasJS.Chart("chartContainer2", {
     theme: "light2",
     title:{
       text: "{{columns[0]}} vs {{columns[2]}}"
+    },
+    axisY: {
+      minimum: 0,
     },
     data: [{        
       type: "column",
