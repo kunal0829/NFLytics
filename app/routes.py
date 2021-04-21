@@ -3,6 +3,8 @@ from flask import render_template, redirect, request, url_for
 from app import database as db_helper
 import string
 
+teams_arr = ['HOU', 'LV', 'MIA', 'ATL', 'WAS', 'SF', 'NO', 'SD', 'DAL', 'DET', 'TEN', 'SEA', 'KC', 'CLE', 'PHI', 'MIN', 'DEN', 'BUF', 'BAL', 'NE', 'TB', 'CHI', 'ARI', 'NYJ', 'GB', 'PIT', 'NYG', 'CAR', 'CIN', 'LA', 'JAX', 'IND']
+divisions = {'AFCN':'AFC North', 'AFCS':'AFC South', 'AFCE':'AFC East', 'AFCW':'AFC West', 'NFCN':'NFC North', 'NFCS':'NFC South', 'NFCE':'NFC East', 'NFCW':'NFC West'}
 
 @app.route("/")
 def homepage():
@@ -132,9 +134,9 @@ def plays(operation=None, id=None):
                     plays = db_helper.fetch_play(ids[2], offenseTeam=ids[0], defenseTeam=ids[1])
                     return render_template("playsearchquery.html", plays=plays)
                 else:
-                    return render_template("playsearch.html")
+                    return render_template("playsearch.html", teams=teams_arr)
             else:
-                return render_template("playsearch.html")
+                return render_template("playsearch.html", teams=teams_arr)
         elif operation == "updateplay":
             if id:
                 play = db_helper.fetch_play_by_id(id)
@@ -153,3 +155,21 @@ def plays(operation=None, id=None):
             return render_template("plays.html")
     else:
         return render_template("plays.html")
+
+@app.route("/seasons")
+@app.route("/seasons/")
+def seasons():
+    return render_template("seasons.html", divisions=divisions)
+
+@app.route("/seasons/<id>")
+@app.route("/seasons/<id>/")
+def season_search(id):
+    if id:
+        ids = id.split('-')
+        if (len(id) >= 2):
+            team_outcome = db_helper.fetch_team_outcome(ids[0], ids[1])
+            return render_template("seasonquery.html", results=team_outcome)
+        else:
+            return render_template("seasons.html", divisions=divisions)
+    else:
+        return render_template("seasons.html", divisions=divisions)

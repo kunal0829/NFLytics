@@ -139,7 +139,7 @@ def convertDiv(division):
 def fetch_play(seasonYear, offenseTeam=None, defenseTeam=None):
     attrs = "PlayId, Quarter, OffenseTeam, DefenseTeam, YardLine, Yards, Description, SeasonYear, GameDate"
 
-    query = "SELECT " + attrs + " FROM Plays WHERE OffenseTeam LIKE \"" + offenseTeam + "\" AND DefenseTeam LIKE \""  + defenseTeam + "\" AND SeasonYear = " + str(seasonYear) + " ORDER BY GameDate DESC, Quarter ASC;"
+    query = "SELECT " + attrs + " FROM Plays WHERE OffenseTeam LIKE \"" + offenseTeam + "\" AND DefenseTeam LIKE \""  + defenseTeam + "\" AND SeasonYear = " + str(seasonYear) + " ORDER BY GameId DESC, Quarter ASC;"
 
     conn = db.connect()
     plays = conn.execute(query).fetchall()
@@ -251,3 +251,26 @@ def update_player(id, first, last, position):
     conn.close()
     return
 
+def fetch_team_outcome(div, yr):
+    attrs = "TeamId, Wins, Losses, Tied, OSRS, DSRS, Year, Name, Division"
+    query = "SELECT " + attrs + " FROM SeasonOutcomes NATURAL JOIN Teams WHERE Division = \"" + div + "\" AND Year = " + yr + " ORDER BY Wins DESC, Tied DESC, OSRS DESC;"
+    conn = db.connect()
+    ret = conn.execute(str(query))
+
+    arr = []
+    for t in ret:
+        current = {
+            'tid': t[0],
+            'wins': t[1],
+            'losses': t[2],
+            'tied': t[3],
+            'osrs': t[4],
+            'dsrs': t[5],
+            'year': t[6],
+            'name': t[7],
+            'division': t[8],
+        }
+        arr.append(current)
+
+    conn.close()
+    return arr

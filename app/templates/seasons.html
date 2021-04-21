@@ -29,10 +29,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="/stats">Stats</a>
               </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/plays">Plays</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
               <a class="nav-link" href="/seasons">Seasons</a>
             </li>
           </ul>
@@ -43,35 +43,23 @@
     <br/>
     <br/>
 
-    <ul class="nav nav-pills nav-fill">
-      <li class="nav-item">
-        <a class="nav-link active" href="/plays/search">Search Play</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/plays/addplay">Add Play</a>
-      </li>
-    </ul>
+    <div class="alert alert-info" role="alert">
+      Search the results of a team in a season!
+    </div>
+    
+    <br/>
 
-    <br/>
-    <br/>
 
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <label class="input-group-text" for="inputOffensiveTeam">Offensive Team:</label>
+        <label class="input-group-text" for="inputOffensiveTeam">Division:</label>
       </div>
-      <select class="custom-select" id="inputOffensiveTeam">
-        {% for team in teams %}
-          <option value="{{team}}">{{team}}</option>
+      <select class="custom-select" id="inputTeam">
+        {% for d in divisions.keys() %}
+          <option value="{{d}}">{{divisions[d]}}</option>
         {% endfor %}
       </select>
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="inputDefensiveTeam">Defensive Team:</label>
-      </div>
-      <select class="custom-select" id="inputDefensiveTeam">
-        {% for team in teams %}
-          <option value="{{team}}">{{team}}</option>
-        {% endfor %}
-      </select>
+      
       <div class="input-group-prepend">
         <label class="input-group-text" for="inputSeasonYear">Season Year:</label>
       </div>
@@ -82,7 +70,7 @@
           <option value="2013">2013</option>
       </select>
       <div class="input-group-prepend">
-        <a id="play-search-button" class="btn btn-outline-success my-2 my-sm-0" role="button" type="submit" onclick="searchPlay()">Search</a>
+        <a id="season-search-button" class="btn btn-outline-success my-2 my-sm-0" role="button" type="submit" onclick="searchTeam()">Search</a>
       </div>
     </div>
 
@@ -93,21 +81,20 @@
 
 
     <script>
-      const offensiveTeam = document.getElementById("inputOffensiveTeam");
-      const defensiveTeam = document.getElementById("inputDefensiveTeam");
+      const team = document.getElementById("inputTeam");
       const seasonYear = document.getElementById("inputSeasonYear");
 
-      function searchPlay() {
-        oTeamID = offensiveTeam.value;
-        dTeamID = defensiveTeam.value;
+      function searchTeam() {
+        tid = team.value;
         season = seasonYear.value;
 
-        window.location.replace("/plays/search/" + oTeamID + "-" + dTeamID + "-" + season);
+        window.location.replace("/seasons/" + tid + "-" + season);
       }
     </script>
 
 
   </body>
+
 
 
 </html>

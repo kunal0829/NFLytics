@@ -59,14 +59,16 @@
       <br/>
       <br/>
 
-      {% if not plays%}
+      {% if not results%}
         <table class="table table-sm table-striped">
           <thead>
             <tr>
-              <th scope="col">Quarter</th>
-              <th scope="col">Offense Team</th>
-              <th scope="col">Defense Team</th>
-              <th scope="col">Description</th>
+              <th scope="col">Team Name</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">Ties</th>
+              <th scope="col">Offensive Ranking</th>
+              <th scope="col">Defensive Ranking</th>
             </tr>
           </thead>
         </table>
@@ -82,28 +84,24 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th scope="col">Quarter</th>
-              <th scope="col">Offense Team</th>
-              <th scope="col">Defense Team</th>
-              <th scope="col">Description</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
+              <th scope="col">Team Name</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">Ties</th>
+              <th scope="col">Offensive Ranking</th>
+              <th scope="col">Defensive Ranking</th>
             </tr>
           </thead>
           <tbody>
 
-            {% for play in plays %}
+            {% for r in results %}
               <tr>
-                <th scope="row">{{play['quarter']}}</td>
-                <td>{{play['oteam']}}</td>
-                <td>{{play['dteam']}}</td>
-                <td>{{play['description']}}</td>
-                <td>
-                  <button type="button" class="btn btn-info" onclick="editplay({{play['playid']}})">Edit</button>
-                </td>
-                <td>
-                  <button type="button" class="btn btn-danger" onclick="deleteplay({{play['playid']}})">Delete</button>
-                </td>
+                <th scope="row">{{r['name']}}</td>
+                <td>{{r['wins']}}</td>
+                <td>{{r['losses']}}</td>
+                <td>{{r['tied']}}</td>
+                <td>{{r['osrs']}}</td>
+                <td>{{r['dsrs']}}</td>
               </tr>
             {% endfor %}
 
