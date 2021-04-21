@@ -13,10 +13,16 @@ def homepage():
 @app.route("/teams")
 @app.route("/teams/")
 @app.route("/teams/<team>")
-def teams(team=None):
+@app.route("/teams/<team>/<year>")
+def teams(team=None,year=None):
     if team:
-        team = db_helper.fetch_teamfromid(team)
-        return render_template("teampage.html", team=team)
+        if year:
+            team = db_helper.fetch_teamfromid(team)
+            roster = db_helper.fetch_roster(team,year)
+            return render_template("teampage.html", team=team,roster=roster)
+        else:
+            team = db_helper.fetch_teamfromid(team)
+            return render_template("teampage.html", team=team,roster=None)
     else:
         teams = db_helper.fetch_teamdata()
         return render_template("teams.html", teams=teams)
@@ -39,6 +45,10 @@ def players(player=None):
 def player(id=None):
     if id:
         player = db_helper.fetch_playerfromid(id)
+        if player["position"] in ["QB","RB","WR","TE"]:
+            columns,stats = db_helper.fetch_playerpagestats(player)
+            return render_template("playerpage.html",player=player,columns=columns,stats=stats)
+        
         return render_template("playerpage.html",player=player)
 
 
@@ -65,7 +75,7 @@ def addplayer():
 @app.route("/removeplayer/<id>",methods = ['POST'])
 def removeplayer(id=None):
     if id:
-        db_helper.removeplayer(id)
+        #db_helper.removeplayer(id)
         return redirect("/players")
     return redirect("/players")
 
@@ -99,7 +109,7 @@ def teamstats(statistic=None):
         return  render_template("teamstat.html",query=query,fields=["Team","Avg 4th Down Conv in 4th"])
     elif statistic == "tfl":
         query = db_helper.fetch_stastics(statistic)
-        return  render_template("shankteamstat.html",query=query,fields=["Team","# of Tackles for Loss"])
+        return  render_template("teamstat.html",query=query,fields=["Team","# of Tackles for Loss"])
     else:
          return render_template("stats.html")
 

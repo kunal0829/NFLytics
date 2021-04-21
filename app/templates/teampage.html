@@ -32,3 +32,32 @@
 <nav class="navbar navbar-light">
   <span style="font-size:30px;"><strong>{{team.city}} {{team.name}} ({{team.id}})</strong></a></span>
 </nav>
+
+<nav class="navbar navbar-light bg-light nav-link" >
+  <a class="nav-link"><strong>Pick a Year Below to View The {{team.city}} {{team.name}} Roster from that Year</strong></a>
+</nav>
+
+<ul class="nav nav-pills nav-fill">
+  <li class="nav-item">
+    <a class="nav-link" href="/teams/{{team.id}}/2013">2013</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/teams/{{team.id}}/2014">2014</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/teams/{{team.id}}/2015">2015</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/teams/{{team.id}}/2016">2016</a>
+  </li>
+</ul>
+
+{% if roster%}
+{% for player in roster %}
+  <nav class="navbar navbar-light bg-light nav-link" >
+      <a class="nav-link" href="/player/{{player.id}}"><strong>{{player.firstname}} {{player.lastname}} {{player.position}}</strong></a>
+  </nav>
+{% endfor %}
+{% endif %}
+
+<!-- Add Player to a Team Roster in a Specific Season -->

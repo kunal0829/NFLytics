@@ -230,7 +230,7 @@ def fetch_stastics(statistic):
     if statistic == "4dc4q":
         query = "SELECT t.name AS \"Team Name\",averageplaysran.averageplays as \"Avg # of Conversions in 4th\" FROM (SELECT p.offenseteam as team, count(*)/4 as averageplays from Plays as p WHERE down = 4 AND yards >= togo AND quarter = 4 GROUP BY p.offenseteam) AS averageplaysran JOIN Teams t ON averageplaysran.team = t.teamid ORDER BY averageplaysran.averageplays DESC;"
     elif statistic == "tfl":
-        query = "SELECT t.name, COUNT(*) as numTFLs FROM (Plays p JOIN Teams t ON (p.defenseteam = t.teamid)) JOIN SeasonOutcomes s ON (t.teamid = s.teamid AND p.seasonYear = s.Year) WHERE yards < 0 AND s.Year = 2015 GROUP BY t.name, s.wins ORDER BY s.wins DESC, numTFLs DESC;"
+        query = "SELECT t.name, COUNT(*) as numTFLs FROM (Plays p JOIN Teams t ON (p.defenseteam = t.teamid)) JOIN SeasonOutcomes s ON (t.teamid = s.teamid AND p.seasonYear = s.Year) WHERE yards < 0 AND s.Year = 2015 GROUP BY t.name, s.wins ORDER BY numTFLs DESC;"
     teamquery = []
     conn = db.connect()
     teams = conn.execute(str(query)).fetchall()
@@ -251,3 +251,90 @@ def update_player(id, first, last, position):
     conn.close()
     return
 
+def get_teams():
+    query = "Select TeamId FROM Teams"
+    conn = db.connect()
+    teams = conn.execute(query).fetchall()
+    conn.close()
+    return teams
+
+def fetch_roster(team,year):
+    query = "Select PlayerId,FirstName,LastName,Position FROM PlayersInfo NATURAL JOIN Players WHERE Team = \"" + str(team["id"]) + "\" and Year = " + str(year)
+    conn = db.connect()
+    queryplayers = conn.execute(query).fetchall()
+    conn.close()
+    players = []
+    for qp in queryplayers: 
+        player = {
+            'id': qp[0],
+            'firstname': qp[1],
+            'lastname': qp[2],
+            'position': qp[3]
+        }
+        players.append(player)    
+    return players
+
+def fetch_playerpagestats(player):
+    columns = []
+    stats = [] #tuples of stat1 (yards), stat2 (td) FOR NOW
+    if player["position"] == "QB":
+        query = "SELECT Year, PassingYards, TDPasses FROM PassingStats WHERE PlayerId = " + str(player["id"])
+        conn = db.connect()
+        querystats = conn.execute(query).fetchall()
+        print(query)
+        conn.close()
+        columns = ["Year","Passing Yards", "Passing Touchdowns"]
+        for qs in querystats:
+            stat = {
+                'stat1': qs[0],
+                'stat2': qs[1],
+                'stat3': qs[2],
+            }
+            stats.append(stat)
+    elif player["position"] == "RB":
+        query = "SELECT Year, RushingYards, RushingTDs FROM RushingStats WHERE PlayerId = " + str(player["id"])
+        conn = db.connect()
+        querystats = conn.execute(query).fetchall()
+        print(query)
+        conn.close()
+        columns = ["Year","Rushing Yards", "Rushing Touchdowns"]
+        for qs in querystats:
+            stat = {
+                'stat1': qs[0],
+                'stat2': qs[1],
+                'stat3': qs[2],
+            }
+            stats.append(stat)
+    elif player["position"] == "WR":
+        query = "SELECT Year, ReceivingYards, ReceivingTDs FROM ReceivingStats WHERE PlayerId = " + str(player["id"])
+        conn = db.connect()
+        querystats = conn.execute(query).fetchall()
+        print(query)
+        conn.close()
+        columns = ["Year","Receiving Yards", "Receiving Touchdowns"]
+        for qs in querystats:
+            stat = {
+                'stat1': qs[0],
+                'stat2': qs[1],
+                'stat3': qs[2],
+            }
+            stats.append(stat)
+    elif player["position"] == "TE":
+        query = "SELECT Year, ReceivingYards, ReceivingTDs FROM ReceivingStats WHERE PlayerId = " + str(player["id"])
+        conn = db.connect()
+        querystats = conn.execute(query).fetchall()
+        print(query)
+        conn.close()
+        columns = ["Year","Receiving Yards", "Receiving Touchdowns"]
+        for qs in querystats:
+            stat = {
+                'stat1': qs[0],
+                'stat2': qs[1],
+                'stat3': qs[2],
+            }
+            stats.append(stat)
+    
+    print(columns)
+    print(stats)
+
+    return columns,stats

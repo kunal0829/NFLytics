@@ -41,9 +41,65 @@
 
 
     <nav class="navbar navbar-light">
-      <span style="font-size:30px;"><strong>{{player.firstname}} {{player.lastname}} {{player.position}} ({{player.id}})</strong></a></span>
+      <span style="font-size:30px;"><strong>{{player.firstname}} {{player.lastname}} ({{player.position}}) - Player Id: {{player.id}}</strong></a></span>
       <form action="/updateplayer/{{player.id}}" method="post" class="form-inline"> <button type="submit" class="btn btn-outline-success my-2 my-sm-0" value ="Remove">Update Player</button> </form>
       <form action="/removeplayer/{{player.id}}" method="post" class="form-inline"> <button type="submit" class="btn btn-outline-success my-2 my-sm-0" value ="Remove">Remove Player</button> </form>
-    </nav>
-   
+    </nav>   
 </html>
+
+{% if stats%}
+
+<script>
+  window.onload = function () {
+  
+  var chart1 = new CanvasJS.Chart("chartContainer1", {
+    animationEnabled: true,
+    theme: "light2",
+    title:{
+      text: "{{columns[0]}} vs {{columns[1]}}"
+    },
+    data: [{        
+      type: "bar",
+          indexLabelFontSize: 16,
+          dataPoints: [
+    {% for stat in stats%}
+      { label: {{stat.stat1}}, y: {{stat.stat2}}},
+    {% endfor %}],
+	}]
+}
+);
+
+
+
+var chart2 = new CanvasJS.Chart("chartContainer2", {
+    animationEnabled: true,
+    theme: "light2",
+    title:{
+      text: "{{columns[0]}} vs {{columns[2]}}"
+    },
+    data: [{        
+      type: "column",
+          indexLabelFontSize: 16,
+          dataPoints: [
+    {% for stat in stats%}
+      { label: {{stat.stat1}}, y: {{stat.stat3}}},
+    {% endfor %}],
+	}]
+}
+);
+
+chart1.render();
+chart2.render();
+  }
+  </script>
+  </head>
+  <body>
+  <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
+  <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  
+
+
+  
+  {% endif %}
+
