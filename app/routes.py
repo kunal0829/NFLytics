@@ -140,7 +140,7 @@ def plays(operation=None, id=None):
         if operation == "search":
             if (id):
                 ids = id.split('-')
-                if (len(id) >= 3):
+                if (len(ids) >= 3):
                     plays = db_helper.fetch_play(ids[2], offenseTeam=ids[0], defenseTeam=ids[1])
                     return render_template("playsearchquery.html", plays=plays)
                 else:
@@ -176,7 +176,7 @@ def seasons():
 def season_search(id):
     if id:
         ids = id.split('-')
-        if (len(id) >= 2):
+        if (len(ids) >= 2):
             team_outcome = db_helper.fetch_team_outcome(ids[0], ids[1])
             return render_template("seasonquery.html", results=team_outcome)
         else:
