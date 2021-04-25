@@ -113,7 +113,6 @@ def fetch_empty_id():
         query = "SELECT PlayerId FROM PlayersInfo WHERE PlayerId = " + str(id)
         check = conn.execute(str(query)).fetchall()
     conn.close()
-    print(id)
     return id
 
 
@@ -192,8 +191,6 @@ def update_play(dict):
     if (dict):
         query = "UPDATE Plays SET Quarter = " + dict['quarter'] + ", OffenseTeam = \"" + dict['oteam'] + "\", DefenseTeam = \"" + dict['dteam'] + "\", YardLine = \"" + dict['yardLine'] + "\", Yards = \"" + dict['yards'] + "\", Description = \"" + dict['description'] + "\", SeasonYear = \"" + dict['season'] + "\" WHERE PlayId = " + dict['playid'] + ";";
 
-        print(query)
-
         conn = db.connect()
         conn.execute(query)
         conn.close()
@@ -202,8 +199,6 @@ def update_play(dict):
 def delete_play(playid):
     if (dict):
         query = "DELETE FROM Plays WHERE PlayId = " + playid + ";";
-
-        print(query)
 
         conn = db.connect()
         conn.execute(query)
@@ -218,8 +213,6 @@ def create_play(dict):
             pid = random.randrange(2**20)
 
         query = "INSERT INTO Plays(" + attrs + ") VALUES(" + str(pid) + ", " + dict['gameid'] + ", \"" + dict['gamedate'] + "\", " + dict['quarter'] + ", \"" + dict['oteam'] + "\", \"" + dict['dteam'] + "\", " + dict['down'] + ", " + dict['togo'] + ", " + dict['yardLine'] + ", " + dict['yards'] + ", \"" + dict['description'] + "\", " + dict['season'] + ");"
-
-        print(query)
 
         conn = db.connect()
         conn.execute(query)
@@ -253,7 +246,14 @@ def update_player(id, first, last, position):
 
 def fetch_team_outcome(div, yr):
     attrs = "TeamId, Wins, Losses, Tied, OSRS, DSRS, Year, Name, Division"
-    query = "SELECT " + attrs + " FROM SeasonOutcomes NATURAL JOIN Teams WHERE Division = \"" + div + "\" AND Year = " + yr + " ORDER BY Wins DESC, Tied DESC, OSRS DESC;"
+    if div == "NFL":
+        query = "SELECT " + attrs + " FROM SeasonOutcomes NATURAL JOIN Teams WHERE Year = " + yr + " ORDER BY Wins DESC, Tied DESC, OSRS DESC;"
+    elif div == "AFC":
+        query = str("SELECT " + attrs + " FROM SeasonOutcomes NATURAL JOIN Teams WHERE Division IN " + str("(\"AFCW\",\"AFCE\",\"AFCS\",\"AFCN\")") + " AND Year = " + yr + " ORDER BY Wins DESC, Tied DESC, OSRS DESC;")
+    elif div == "NFC":
+        query = str("SELECT " + attrs + " FROM SeasonOutcomes NATURAL JOIN Teams WHERE Division IN " + str("(\"NFCW\",\"NFCE\",\"NFCS\",\"NFCN\")") + " AND Year = " + yr + " ORDER BY Wins DESC, Tied DESC, OSRS DESC;")
+    else:
+        query = "SELECT " + attrs + " FROM SeasonOutcomes NATURAL JOIN Teams WHERE Division = \"" + div + "\" AND Year = " + yr + " ORDER BY Wins DESC, Tied DESC, OSRS DESC;"
     conn = db.connect()
     ret = conn.execute(str(query))
 
@@ -304,7 +304,6 @@ def fetch_playerpagestats(player):
         query = "SELECT Year, PassingYards, TDPasses FROM PassingStats WHERE PlayerId = " + str(player["id"])
         conn = db.connect()
         querystats = conn.execute(query).fetchall()
-        print(query)
         conn.close()
         columns = ["Year","Passing Yards", "Passing Touchdowns"]
         for qs in querystats:
@@ -318,7 +317,6 @@ def fetch_playerpagestats(player):
         query = "SELECT Year, RushingYards, RushingTDs FROM RushingStats WHERE PlayerId = " + str(player["id"])
         conn = db.connect()
         querystats = conn.execute(query).fetchall()
-        print(query)
         conn.close()
         columns = ["Year","Rushing Yards", "Rushing Touchdowns"]
         for qs in querystats:
@@ -332,7 +330,6 @@ def fetch_playerpagestats(player):
         query = "SELECT Year, ReceivingYards, ReceivingTDs FROM ReceivingStats WHERE PlayerId = " + str(player["id"])
         conn = db.connect()
         querystats = conn.execute(query).fetchall()
-        print(query)
         conn.close()
         columns = ["Year","Receiving Yards", "Receiving Touchdowns"]
         for qs in querystats:
@@ -346,7 +343,6 @@ def fetch_playerpagestats(player):
         query = "SELECT Year, ReceivingYards, ReceivingTDs FROM ReceivingStats WHERE PlayerId = " + str(player["id"])
         conn = db.connect()
         querystats = conn.execute(query).fetchall()
-        print(query)
         conn.close()
         columns = ["Year","Receiving Yards", "Receiving Touchdowns"]
         for qs in querystats:
@@ -356,8 +352,32 @@ def fetch_playerpagestats(player):
                 'stat3': qs[2],
             }
             stats.append(stat)
-    
-    print(columns)
-    print(stats)
+    elif player["position"] == "CB" or player["position"] == "SF":
+        print("Hello")
+        query = "SELECT Year, Ints, TotalTackles FROM DefensiveStats WHERE PlayerId = " + str(player["id"])
+        conn = db.connect()
+        querystats = conn.execute(query).fetchall()
+        conn.close()
+        columns = ["Year","Interceptions", "Total Tackles"]
+        for qs in querystats:
+            stat = {
+                'stat1': qs[0],
+                'stat2': qs[1],
+                'stat3': qs[2],
+            }
+            stats.append(stat)
+    elif player["position"] == "DE" or player["position"] == "DT"  or player["position"] == "LB":
+        query = "SELECT Year, Sacks, TotalTackles FROM DefensiveStats WHERE PlayerId = " + str(player["id"])
+        conn = db.connect()
+        querystats = conn.execute(query).fetchall()
+        conn.close()
+        columns = ["Year","Sacks", "Total Tackles"]
+        for qs in querystats:
+            stat = {
+                'stat1': qs[0],
+                'stat2': qs[1],
+                'stat3': qs[2],
+            }
+            stats.append(stat)
 
     return columns,stats

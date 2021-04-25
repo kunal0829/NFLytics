@@ -47,7 +47,8 @@ def players(player=None):
 def player(id=None):
     if id:
         player = db_helper.fetch_playerfromid(id)
-        if player["position"] in ["QB","RB","WR","TE"]:
+        print(str(player["position"]) + "yo")
+        if player["position"] in ["QB","RB","WR","TE","SF","CB","DT","DE","LB"]:
             columns,stats = db_helper.fetch_playerpagestats(player)
             return render_template("playerpage.html",player=player,columns=columns,stats=stats)
         
