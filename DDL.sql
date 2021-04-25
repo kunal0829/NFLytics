@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS WatchList;
 DROP TABLE IF EXISTS SeasonOutcomes;
 DROP TABLE IF EXISTS Plays;
 DROP TABLE IF EXISTS RushingStats;
@@ -112,10 +111,4 @@ CREATE TABLE SeasonOutcomes(
 	Year INTEGER,
 	PRIMARY KEY(TeamID,Year),
 	FOREIGN KEY(TeamId) REFERENCES Teams(TeamId)
-);
-
-CREATE TABLE WatchList(
-	PlayerId INTEGER,
-	PRIMARY KEY(PlayerId),
-	FOREIGN KEY(PlayerId) REFERENCES PlayersInfo(PlayerId) ON DELETE CASCADE
 );
