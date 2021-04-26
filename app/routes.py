@@ -6,10 +6,16 @@ import string
 teams_arr = ['HOU', 'LV', 'MIA', 'ATL', 'WAS', 'SF', 'NO', 'SD', 'DAL', 'DET', 'TEN', 'SEA', 'KC', 'CLE', 'PHI', 'MIN', 'DEN', 'BUF', 'BAL', 'NE', 'TB', 'CHI', 'ARI', 'NYJ', 'GB', 'PIT', 'NYG', 'CAR', 'CIN', 'LA', 'JAX', 'IND']
 divisions = {'AFCN':'AFC North', 'AFCS':'AFC South', 'AFCE':'AFC East', 'AFCW':'AFC West', 'NFCN':'NFC North', 'NFCS':'NFC South', 'NFCE':'NFC East', 'NFCW':'NFC West'}
 
+ADMIN_LOGINS = { "admin":"admin", "Shashank":"Shashank", "Kunal":"Kunal", "Amandeep":"Amandeep"}
+# admin_access = False
+# CURR_USER = "Guest"
+# print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
+db_helper.init()
+
 @app.route("/")
 def homepage():
-    teams = db_helper.fetch_teamdata()
-    return render_template("mainpage.html")
+    return render_template("mainpage.html", user=db_helper.get_curr_user())
 
 
 @app.route("/teams")
@@ -72,18 +78,24 @@ def add():
 
 @app.route("/addplayer")
 def addplayer():
-    return render_template("addplayer.html")
+    if db_helper.get_admin_access():
+        return render_template("addplayer.html")
+    return render_template("accesserror.html")
 
 @app.route("/removeplayer/<id>",methods = ['POST'])
 def removeplayer(id=None):
-    if id:
-        #db_helper.removeplayer(id)
+    if not db_helper.get_admin_access():
+        return render_template("accesserror.html")
+    elif id:
+        db_helper.removeplayer(id)
         return redirect("/players")
     return redirect("/players")
 
 @app.route("/updateplayer/<id>",methods = ['POST'])
 def updateplayer(id=None):
-    if id:
+    if not db_helper.get_admin_access():
+        return render_template("accesserror.html")
+    elif id:
         player = db_helper.fetch_playerfromid(id)
         return render_template("updateplayer.html",player=player)
     return render_template("updateplayer.html",player=None)
@@ -148,18 +160,24 @@ def plays(operation=None, id=None):
             else:
                 return render_template("playsearch.html", teams=teams_arr)
         elif operation == "updateplay":
-            if id:
+            if not db_helper.get_admin_access():
+                return render_template("accesserror.html")
+            elif id:
                 play = db_helper.fetch_play_by_id(id)
                 return render_template("playupdate.html", play=play)
             else:
                 return render_template("plays.html")
         elif operation == "deleteplay":
-            if id:
+            if not db_helper.get_admin_access():
+                return render_template("accesserror.html")
+            elif id:
                 play = db_helper.delete_play(id)
                 return render_template("plays.html", play=play)
             else:
                 return render_template("plays.html")
         elif operation == "addplay":
+            if not db_helper.get_admin_access():
+                return render_template("accesserror.html")
             return render_template("playsadd.html")
         else:
             return render_template("plays.html")
@@ -183,3 +201,27 @@ def season_search(id):
             return render_template("seasons.html", divisions=divisions)
     else:
         return render_template("seasons.html", divisions=divisions)
+
+
+@app.route("/login")
+@app.route("/login/")
+def login():
+    return render_template("login.html", status="first")
+
+@app.route("/login", methods=['POST'])
+def login_process():
+    uname = request.form['uname']
+    pwd = request.form['password']
+    
+    if (uname == "Guest"):
+        db_helper.set_admin_access(False)
+        db_helper.set_curr_user("Guest")
+        return render_template("mainpage.html", user=db_helper.get_curr_user())
+    elif (uname in ADMIN_LOGINS.keys()  and  ADMIN_LOGINS[uname] == pwd):
+        db_helper.set_admin_access(True)
+        db_helper.set_curr_user(uname)
+        return render_template("mainpage.html", user=db_helper.get_curr_user())
+    else:
+        db_helper.set_admin_access(False)
+        db_helper.set_curr_user("Guest")
+        return render_template("login.html", status="incorrect")

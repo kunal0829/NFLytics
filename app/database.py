@@ -2,6 +2,14 @@ from app import db
 import math
 import random
 
+admin_access = False
+CURR_USER = "Guest"
+# print("========================================================================")
+
+def init():
+    query = open("app/sqltrigger.txt", "r").read()
+    print(query)
+
 
 def fetch_teamdata():
     """Reads all tasks listed in the todo table
@@ -361,3 +369,21 @@ def fetch_playerpagestats(player):
     print(stats)
 
     return columns,stats
+
+
+def get_admin_access():
+    global admin_access
+    return admin_access
+
+def get_curr_user():
+    global CURR_USER
+    return CURR_USER
+
+def set_curr_user(val):
+    global CURR_USER
+    CURR_USER = val
+
+def set_admin_access(val):
+    global admin_access
+    admin_access = val
+    print(admin_access)
