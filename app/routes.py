@@ -15,7 +15,7 @@ db_helper.init()
 
 @app.route("/")
 def homepage():
-    return render_template("mainpage.html", user=db_helper.get_curr_user())
+    return "Idk"
 
 
 @app.route("/teams")
@@ -49,7 +49,7 @@ def players(player=None):
         return render_template("players.html",user=db_helper.get_curr_user())
 
 
-@app.route("/player/<id>")
+@app.route("/plagyer/<id>")
 def player(id=None):
     if id:
         player = db_helper.fetch_playerfromid(id)
@@ -63,19 +63,6 @@ def player(id=None):
 
 # we want an app route to carry out the action of adding the player
 # since this action is based on the submission of a form it is considered a POST http request
-@app.route("/add", methods = ['POST'])
-def add():
-    print("hello")
-    # when a POST is made to this endpoint we can get the data submitted as a dictionary (request.form)
-    # add_id = request.form['id']
-    add_id = db_helper.fetch_empty_id()
-    add_first_name = request.form['firstname']
-    add_last_name = request.form['lastname']
-    add_pos = request.form['position']
-    print("{} - {} - {} - {}".format(add_id, add_first_name, add_last_name, add_pos)) # to check if it worked
-    # now you have all four stuff and can check or do whatever and if good addplayer to DB
-    db_helper.addplayer(add_id, add_first_name, add_last_name, add_pos)
-    return redirect("/player/"+str(add_id)) # this will look for addplayer route (the one below)
 
 @app.route("/addplayer")
 def addplayer():
@@ -254,10 +241,7 @@ def login():
     return render_template("login.html", status="first",user=db_helper.get_curr_user())
 
 @app.route("/login", methods=['POST'])
-def login_process():
-    uname = request.form['uname']
-    pwd = request.form['password']
-    
+def login_process():    
     if (uname == "Guest"):
         db_helper.set_admin_access(False)
         db_helper.set_curr_user("Guest")
