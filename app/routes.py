@@ -6,7 +6,7 @@ import string
 teams_arr = ['HOU', 'LV', 'MIA', 'ATL', 'WAS', 'SF', 'NO', 'SD', 'DAL', 'DET', 'TEN', 'SEA', 'KC', 'CLE', 'PHI', 'MIN', 'DEN', 'BUF', 'BAL', 'NE', 'TB', 'CHI', 'ARI', 'NYJ', 'GB', 'PIT', 'NYG', 'CAR', 'CIN', 'LA', 'JAX', 'IND']
 divisions = {'AFCN':'AFC North', 'AFCS':'AFC South', 'AFCE':'AFC East', 'AFCW':'AFC West', 'NFCN':'NFC North', 'NFCS':'NFC South', 'NFCE':'NFC East', 'NFCW':'NFC West'}
 
-ADMIN_LOGINS = { "admin":"admin", "Shashank":"Shashank", "Kunal":"Kunal", "Amandeep":"Amandeep", "Arpandeep":"Arpandeep", "Nandini":"Nandini"}
+ADMIN_LOGINS = {"Shashank":"dkjsfgsd", "Kunal":"sdlkfh", "Amandeep":"skdjhfsd", "Arpandeep":"safsdkfjh", "Nandini":"ksdjfsdfsd"}
 # admin_access = False
 # CURR_USER = "Guest"
 # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
@@ -27,13 +27,13 @@ def teams(team=None,year=None):
         if year:
             team = db_helper.fetch_teamfromid(team)
             roster = db_helper.fetch_roster(team,year)
-            return render_template("teampage.html", team=team,roster=roster)
+            return render_template("teampage.html", team=team,roster=roster,user=db_helper.get_curr_user())
         else:
             team = db_helper.fetch_teamfromid(team)
-            return render_template("teampage.html", team=team,roster=None)
+            return render_template("teampage.html", team=team,roster=None,user=db_helper.get_curr_user())
     else:
         teams = db_helper.fetch_teamdata()
-        return render_template("teams.html", teams=teams)
+        return render_template("teams.html", teams=teams,user=db_helper.get_curr_user())
 
 @app.route("/players")
 @app.route("/players/")
@@ -41,12 +41,12 @@ def teams(team=None,year=None):
 def players(player=None):
     if str(player).upper() == "KASA" :
         players = db_helper.fetch_demoplayerquery(player)
-        return render_template("playerquery.html",players=players)
+        return render_template("playerquery.html",players=players,user=db_helper.get_curr_user())
     if player:
         players = db_helper.fetch_playerquery(player)
-        return render_template("playerquery.html",players=players)
+        return render_template("playerquery.html",players=players,user=db_helper.get_curr_user())
     else:
-        return render_template("players.html")
+        return render_template("players.html",user=db_helper.get_curr_user())
 
 
 @app.route("/player/<id>")
@@ -80,13 +80,13 @@ def add():
 @app.route("/addplayer")
 def addplayer():
     if db_helper.get_admin_access():
-        return render_template("addplayer.html")
-    return render_template("accesserror.html")
+        return render_template("addplayer.html",user=db_helper.get_curr_user())
+    return render_template("accesserror.html",user=db_helper.get_curr_user())
 
 @app.route("/removeplayer/<id>",methods = ['POST'])
 def removeplayer(id=None):
     if not db_helper.get_admin_access():
-        return render_template("accesserror.html")
+        return render_template("accesserror.html",user=db_helper.get_curr_user())
     elif id:
         db_helper.removeplayer(id)
         return redirect("/players")
@@ -95,11 +95,11 @@ def removeplayer(id=None):
 @app.route("/updateplayer/<id>",methods = ['POST'])
 def updateplayer(id=None):
     if not db_helper.get_admin_access():
-        return render_template("accesserror.html")
+        return render_template("accesserror.html",user=db_helper.get_curr_user())
     elif id:
         player = db_helper.fetch_playerfromid(id)
-        return render_template("updateplayer.html",player=player)
-    return render_template("updateplayer.html",player=None)
+        return render_template("updateplayer.html",player=player,user=db_helper.get_curr_user())
+    return render_template("updateplayer.html",player=None,user=db_helper.get_curr_user())
 
 @app.route("/updateplayer/updated/<id>", methods = ['POST'])
 def updated(id = None):
@@ -115,18 +115,18 @@ def updated(id = None):
 
 @app.route("/stats")
 def stats():
-        return render_template("stats.html")
+        return render_template("stats.html",user=db_helper.get_curr_user())
 
 @app.route("/stats/team/<statistic>")
 def teamstats(statistic=None):
     if statistic == "4dc4q":
         query = db_helper.fetch_stastics(statistic)
-        return  render_template("teamstat.html",query=query,fields=["Team","Avg 4th Down Conv in 4th"])
+        return  render_template("teamstat.html",query=query,fields=["Team","Avg 4th Down Conv in 4th"],user=db_helper.get_curr_user())
     elif statistic == "tfl":
         query = db_helper.fetch_stastics(statistic)
-        return  render_template("teamstat.html",query=query,fields=["Team","# of Tackles for Loss"])
+        return  render_template("teamstat.html",query=query,fields=["Team","# of Tackles for Loss"],user=db_helper.get_curr_user())
     else:
-         return render_template("stats.html")
+         return render_template("stats.html",user=db_helper.get_curr_user())
 
 
 #SHANK ROUTES
@@ -134,13 +134,13 @@ def teamstats(statistic=None):
 @app.route("/plays/updated", methods = ['POST'])
 def update_play():
     db_helper.update_play(request.form)
-    return render_template("plays.html")
+    return render_template("plays.html",user=db_helper.get_curr_user())
 
 @app.route("/plays/add_play", methods = ['POST'])
 def add_play():
     print("=======ADDED PLAYS=======")
     db_helper.create_play(request.form)
-    return render_template("plays.html")
+    return render_template("plays.html",user=db_helper.get_curr_user())
 
 @app.route("/plays")
 @app.route("/plays/")
@@ -155,17 +155,17 @@ def plays(operation=None, id=None):
                 ids = id.split('-')
                 if (len(ids) >= 3):
                     plays = db_helper.fetch_play(ids[2], offenseTeam=ids[0], defenseTeam=ids[1])
-                    return render_template("playsearchquery.html", plays=plays)
+                    return render_template("playsearchquery.html", plays=plays,user=db_helper.get_curr_user())
                 else:
-                    return render_template("playsearch.html", teams=teams_arr)
+                    return render_template("playsearch.html", teams=teams_arr,user=db_helper.get_curr_user())
             else:
-                return render_template("playsearch.html", teams=teams_arr)
+                return render_template("playsearch.html", teams=teams_arr,user=db_helper.get_curr_user())
         elif operation == "updateplay":
             if not db_helper.get_admin_access():
                 return render_template("accesserror.html")
             elif id:
                 play = db_helper.fetch_play_by_id(id)
-                return render_template("playupdate.html", play=play)
+                return render_template("playupdate.html", play=play,user=db_helper.get_curr_user())
             else:
                 return render_template("plays.html")
         elif operation == "deleteplay":
@@ -173,22 +173,22 @@ def plays(operation=None, id=None):
                 return render_template("accesserror.html")
             elif id:
                 play = db_helper.delete_play(id)
-                return render_template("plays.html", play=play)
+                return render_template("plays.html", play=play,user=db_helper.get_curr_user())
             else:
-                return render_template("plays.html")
+                return render_template("plays.html",user=db_helper.get_curr_user())
         elif operation == "addplay":
             if not db_helper.get_admin_access():
-                return render_template("accesserror.html")
-            return render_template("playsadd.html")
+                return render_template("accesserror.html",user=db_helper.get_curr_user())
+            return render_template("playsadd.html",user=db_helper.get_curr_user())
         else:
-            return render_template("plays.html")
+            return render_template("plays.html",user=db_helper.get_curr_user())
     else:
-        return render_template("plays.html")
+        return render_template("plays.html",user=db_helper.get_curr_user())
 
 @app.route("/seasons")
 @app.route("/seasons/")
 def seasons():
-    return render_template("seasons.html", divisions=divisions)
+    return render_template("seasons.html", divisions=divisions,user=db_helper.get_curr_user())
 
 @app.route("/seasons/<id>")
 @app.route("/seasons/<id>/")
@@ -197,17 +197,18 @@ def season_search(id):
         ids = id.split('-')
         if (len(ids) >= 2):
             team_outcome = db_helper.fetch_team_outcome(ids[0], ids[1])
-            return render_template("seasonquery.html", results=team_outcome)
+            return render_template("seasonquery.html", results=team_outcome,user=db_helper.get_curr_user())
         else:
-            return render_template("seasons.html", divisions=divisions)
+            return render_template("seasons.html", divisions=divisions,user=db_helper.get_curr_user())
     else:
-        return render_template("seasons.html", divisions=divisions)
+        return render_template("seasons.html", divisions=divisions,user=db_helper.get_curr_user())
 
 
 @app.route("/login")
 @app.route("/login/")
 def login():
-    return render_template("login.html", status="first")
+    db_helper.set_curr_user("Guest")
+    return render_template("login.html", status="first",user=db_helper.get_curr_user())
 
 @app.route("/login", methods=['POST'])
 def login_process():
@@ -225,4 +226,4 @@ def login_process():
     else:
         db_helper.set_admin_access(False)
         db_helper.set_curr_user("Guest")
-        return render_template("login.html", status="incorrect")
+        return render_template("login.html", status="incorrect",user=db_helper.get_curr_user())

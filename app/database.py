@@ -8,7 +8,7 @@ CURR_USER = "Guest"
 
 def init():
     query = open("app/sqltrigger.txt", "r").read()
-    print(query)
+    #print(query)
 
 
 def fetch_teamdata():
