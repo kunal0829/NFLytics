@@ -58,6 +58,9 @@
         <label class="input-group-text" for="inputOffensiveTeam">Division:</label>
       </div>
       <select class="custom-select" id="inputTeam">
+        <option value="NFL">NFL</option>
+        <option value="AFC">AFC</option>
+        <option value="AFC">NFC</option>
         {% for d in divisions.keys() %}
           <option value="{{d}}">{{divisions[d]}}</option>
         {% endfor %}
