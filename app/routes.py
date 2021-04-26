@@ -6,7 +6,7 @@ import string
 teams_arr = ['HOU', 'LV', 'MIA', 'ATL', 'WAS', 'SF', 'NO', 'SD', 'DAL', 'DET', 'TEN', 'SEA', 'KC', 'CLE', 'PHI', 'MIN', 'DEN', 'BUF', 'BAL', 'NE', 'TB', 'CHI', 'ARI', 'NYJ', 'GB', 'PIT', 'NYG', 'CAR', 'CIN', 'LA', 'JAX', 'IND']
 divisions = {'AFCN':'AFC North', 'AFCS':'AFC South', 'AFCE':'AFC East', 'AFCW':'AFC West', 'NFCN':'NFC North', 'NFCS':'NFC South', 'NFCE':'NFC East', 'NFCW':'NFC West'}
 
-ADMIN_LOGINS = {"Shashank":"royal", "Kunal":"capitals", "Amandeep":"sunrisers", "Arpandeep":"superkings", "Nandini":"ksdjfsdfsd"}
+ADMIN_LOGINS = {"Shashank":"lsdkjfsd", "Kunal":"sdlfksdf", "Amandeep":"dslfjsd", "Arpandeep":"sfsdhfjks", "Nandini":"ksdjfsdfsd"}
 # admin_access = False
 # CURR_USER = "Guest"
 # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
