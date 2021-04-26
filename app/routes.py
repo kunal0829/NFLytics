@@ -6,7 +6,7 @@ import string
 teams_arr = ['HOU', 'LV', 'MIA', 'ATL', 'WAS', 'SF', 'NO', 'SD', 'DAL', 'DET', 'TEN', 'SEA', 'KC', 'CLE', 'PHI', 'MIN', 'DEN', 'BUF', 'BAL', 'NE', 'TB', 'CHI', 'ARI', 'NYJ', 'GB', 'PIT', 'NYG', 'CAR', 'CIN', 'LA', 'JAX', 'IND']
 divisions = {'AFCN':'AFC North', 'AFCS':'AFC South', 'AFCE':'AFC East', 'AFCW':'AFC West', 'NFCN':'NFC North', 'NFCS':'NFC South', 'NFCE':'NFC East', 'NFCW':'NFC West'}
 
-ADMIN_LOGINS = {"Shashank":"dkjsfgsd", "Kunal":"sdlkfh", "Amandeep":"skdjhfsd", "Arpandeep":"safsdkfjh", "Nandini":"ksdjfsdfsd"}
+ADMIN_LOGINS = {"Shashank":"royal", "Kunal":"capitals", "Amandeep":"sunrisers", "Arpandeep":"superkings", "Nandini":"ksdjfsdfsd"}
 # admin_access = False
 # CURR_USER = "Guest"
 # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
@@ -125,6 +125,48 @@ def teamstats(statistic=None):
     elif statistic == "tfl":
         query = db_helper.fetch_stastics(statistic)
         return  render_template("teamstat.html",query=query,fields=["Team","# of Tackles for Loss"],user=db_helper.get_curr_user())
+
+    elif statistic == "avgteampassyd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("teamstat.html",query=query,fields=["Team","Average Passing Yards"],user=db_helper.get_curr_user())
+    elif statistic == "avgteamrecyd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("teamstat.html",query=query,fields=["Team","Average Receiving Yards"],user=db_helper.get_curr_user())
+    elif statistic == "avgteamrushyd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("teamstat.html",query=query,fields=["Team","Average Rushing Yards"],user=db_helper.get_curr_user())
+    elif statistic == "avgteampasstd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("teamstat.html",query=query,fields=["Team","Average Passing TDs"],user=db_helper.get_curr_user())
+    elif statistic == "avgteamrectd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("teamstat.html",query=query,fields=["Team","Average Receiving TDs"],user=db_helper.get_curr_user())
+    elif statistic == "avgteamrushtd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("teamstat.html",query=query,fields=["Team","Average Rushing TDs"],user=db_helper.get_curr_user())
+    else:
+         return render_template("stats.html",user=db_helper.get_curr_user())
+
+@app.route("/stats/player/<statistic>")
+def playerstats(statistic=None):
+    if statistic == "avgplayerpassyd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("playerstat.html",query=query,fields=["Player","Average Passing Yards"],user=db_helper.get_curr_user())
+    elif statistic == "avgplayerrecyd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("playerstat.html",query=query,fields=["Player","Average Receiving Yards"],user=db_helper.get_curr_user())
+    elif statistic == "avgplayerrushyd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("playerstat.html",query=query,fields=["Player","Average Rushing Yards"],user=db_helper.get_curr_user())
+    elif statistic == "avgplayerpasstd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("playerstat.html",query=query,fields=["Player","Average Passing TDs"],user=db_helper.get_curr_user())
+    elif statistic == "avgplayerrectd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("playerstat.html",query=query,fields=["Player","Average Receiving TDs"],user=db_helper.get_curr_user())
+    elif statistic == "avgplayerrushtd":
+        query = db_helper.fetch_stastics(statistic)
+        return  render_template("playerstat.html",query=query,fields=["Player","Average Rushing TDs"],user=db_helper.get_curr_user())
     else:
          return render_template("stats.html",user=db_helper.get_curr_user())
 
@@ -208,6 +250,7 @@ def season_search(id):
 @app.route("/login/")
 def login():
     db_helper.set_curr_user("Guest")
+    db_helper.set_admin_access(False)
     return render_template("login.html", status="first",user=db_helper.get_curr_user())
 
 @app.route("/login", methods=['POST'])

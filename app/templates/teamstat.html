@@ -47,8 +47,14 @@
     Team Statistics
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href="/stats/team/4dc4q">4th Down Conversions in 4th</a>
-      <a class="dropdown-item" href="/stats/team/tfl">Tackles For Loss</a>
+    <a class="dropdown-item" href="/stats/team/4dc4q">4th Down Conversions in 4th</a>
+    <a class="dropdown-item" href="/stats/team/tfl">Tackles For Loss</a>
+    <a class="dropdown-item" href="/stats/team/avgteampassyd">Average Passing Yards</a>
+    <a class="dropdown-item" href="/stats/team/avgteamrecyd">Average Receiving Yards</a>
+    <a class="dropdown-item" href="/stats/team/avgteamrushyd">Average Rushing Yards</a>
+    <a class="dropdown-item" href="/stats/team/avgteampasstd">Average Passing TDs</a>
+    <a class="dropdown-item" href="/stats/team/avgteamrectd">Average Receiving TDs</a>
+    <a class="dropdown-item" href="/stats/team/avgteamrushtd">Average Rushing TDs</a>
   </div>
 </div>
 
@@ -59,6 +65,12 @@
     Player Statistics
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/stats/player/avgplayerpassyd">Average Passing Yards</a>
+      <a class="dropdown-item" href="/stats/player/avgplayerrecyd">Average Receiving Yards</a>
+      <a class="dropdown-item" href="/stats/player/avgplayerrushyd">Average Rushing Yards</a>
+      <a class="dropdown-item" href="/stats/player/avgplayerpasstd">Average Passing TDs</a>
+      <a class="dropdown-item" href="/stats/player/avgplayerrectd">Average Receiving TDs</a>
+      <a class="dropdown-item" href="/stats/player/avgplayerrushtd">Average Rushing TDs</a>
   </div>
 </div>
 
@@ -96,7 +108,8 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		text: "{{fields[0]}} vs {{fields[1]}}"
 	},
 	axisY: {
-		title: "{{fields[1]}}"
+		title: "{{fields[1]}}",
+    minimum: 0,
 	},
   axisX: {
     labelFontSize: 10.5,
@@ -107,7 +120,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		type: "column",
 		dataPoints: [
     {% for team in query%}
-      { y: {{team.avg}},  label: "{{team.teamname}}" },
+      { y: {{team.secondcolumn}},  label: "{{team.firstcolumn}}" },
     {% endfor %}],
 	}]
 });
